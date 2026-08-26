@@ -1,0 +1,148 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #EDE4D3;
+  --sections: #C9B79C;
+  --primary: #9C7A54;
+  --border: #6B4F3A;
+  --text: #3E2E22;
+}
+
+html {
+  background-color: var(--background);
+  font-family: "consolas", monospace;
+  font-size: 10px;
+  color: var(--text);
+}
+body {
+  width: 100vw;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h3 {
+  font-size: 2.5rem;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  margin: 5px 0;
+}
+
+section {
+  width: 95vw;
+  min-height: 50px;
+  border-radius: 10px;
+  background-color: var(--sections);
+  padding: 5px;
+  border: 3px solid var(--border);
+  margin: 5px;
+}
+
+.the-hangman {
+  display: flex;
+  justify-content: center;
+}
+
+#drawing {
+  max-width: 75vw;
+}
+
+.hidden {
+  display: none;
+}
+
+.the-word {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.the-word span {
+  background-color: var(--background);
+  font-size: 2.5rem;
+  padding: 5px;
+  border: 1px solid var(--border);
+  margin: 2px;
+}
+
+.button-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.letter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.letter-buttons button {
+  background-color: var(--background);
+  font-size: 2rem;
+  text-align: center;
+  color: var(--text);
+  border-radius: 5px;
+  margin: 1px;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+}
+
+.letter-buttons button.correct {
+  background-color: #5B8A2B;
+}
+
+.letter-buttons button.incorrect {
+  background-color: #C7452A;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+}
+
+.menu button {
+  margin: 5px;
+  font-size: 2rem;
+  background-color: var(--primary);
+  color: var(--text);
+  border: var(--border) 2px solid;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  section {
+    width: 500px;
+  }
+  #drawing {
+    max-width: 300px;
+  }
+  body {
+    height: 80vh;
+    justify-content: center;
+  }
+  .the-word span {
+    font-size: 3rem;
+  }
+  .letter-buttons button {
+    font-size: 2.5rem;
+    width: 3.5rem;
+  }
+  h1 {
+    font-size: 5rem;
+  }
+}
