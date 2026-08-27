@@ -134,10 +134,14 @@ function resetLayout() {
 async function loadWords() {
   const response = await fetch("words-es.json");
   words = await response.json();
-  console.log(words);
+  // console.log(words);
 }
 
 loadWords();
+
+function validateInput(word) {
+  return /^[a-záéíóúüñ]+$/i.test(word);
+} 
 
 function normalizeWord(word) {
   let enie = [];
@@ -165,11 +169,20 @@ function normalizeWord(word) {
 }
 
 function multiPlayerMode() {
-  originalWord = prompt("¿Qué palabra hay que adivinar?").toUpperCase();
-  wordToGuess = normalizeWord(originalWord);
-  console.log(wordToGuess);
+  originalInput = prompt("¿Qué palabra hay que adivinar?");
 
-  resetLayout();
+  if (originalInput === null) {
+    console.log("Input Cancelled");
+  } else {
+    if (validateInput(originalInput) === true) {
+      originalWord = originalInput.toUpperCase();
+      wordToGuess = normalizeWord(originalWord);
+      console.log(wordToGuess);
+      resetLayout();
+    } else {
+      console.log(`\"${originalInput}\" is an Invalid Input`)
+    }
+  }
 }
 
 function singlePlayerMode() {
