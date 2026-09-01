@@ -4,6 +4,7 @@ let guessedLetters = "";
 let fields = "";
 let mistakeCount = 0;
 let originalWord = "";
+let popupMode = "";
 
 const hangmanSection = document.querySelector(".the-hangman");
 const hangmanHead = document.querySelector("#head");
@@ -19,8 +20,29 @@ const letterButtonSection = document.querySelector(".letter-buttons");
 const multiMode = document.querySelector("#multiplayer-button");
 const singleMode = document.querySelector("#singleplayer-button");
 
-multiMode.addEventListener("click", multiPlayerMode);
+const modal = document.getElementById("word-modal");
+const exitButton = document.querySelector("#exit");
+const popupTitle = document.getElementById("modal-title");
+const popupMessage = document.getElementById("modal-message");
+const popupInput = document.getElementById("modal-input");
+const popupButton = document.getElementById("modal-button");
+
+multiMode.addEventListener("click", () => {
+  popupMode = "input";
+  popupController();
+});
 singleMode.addEventListener("click", singlePlayerMode);
+
+exitButton.addEventListener("click", () => {
+  popupMode = "invalid";
+  buttonController();
+})
+popupInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    buttonController();
+  }
+});
+popupButton.addEventListener("click", buttonController);
 
 function buttonCheck(event) {
   button = event.target;
@@ -31,7 +53,6 @@ function buttonCheck(event) {
     button.disabled = true;
     button.classList.add("correct")
     printBlanks();
-    // console.log(fields);
 
     if (wordToGuess === fields) {
       console.log(fields);
@@ -134,7 +155,6 @@ function resetLayout() {
 async function loadWords() {
   const response = await fetch("words-es.json");
   words = await response.json();
-  // console.log(words);
 }
 
 loadWords();
@@ -169,9 +189,12 @@ function normalizeWord(word) {
 }
 
 function multiPlayerMode() {
-  originalInput = prompt("¿Qué palabra hay que adivinar?");
+
+  originalInput = popupInput.value;
+  modal.style.display = "none";
 
   if (originalInput === null) {
+    popupController();
     console.log("Input Cancelled");
   } else {
     if (validateInput(originalInput) === true) {
@@ -180,7 +203,8 @@ function multiPlayerMode() {
       console.log(wordToGuess);
       resetLayout();
     } else {
-      console.log(`\"${originalInput}\" is an Invalid Input`)
+      popupMode = "invalid";
+      popupController();
     }
   }
 }
@@ -193,6 +217,35 @@ function singlePlayerMode() {
   console.log(wordToGuess);
 
   resetLayout();
+}
+
+function buttonController() {
+  if (popupMode === "input") {
+    multiPlayerMode();
+  } else if (popupMode === "invalid") {
+    modal.style.display = "none";
+  }
+}
+
+function popupController() {
+
+  if (popupMode === "input") {
+    popupTitle.textContent = "¿Qué palabra hay que adivinar?:";
+    popupMessage.style.display = "none";
+    popupInput.style.display = "block";
+    popupInput.value = "";
+    modal.style.display = "block";
+    popupInput.focus();
+  } else if (popupMode === "invalid") {
+    popupTitle.textContent = "¡Mucho ojo, cuate!";
+    popupMessage.style.display = "block";
+    popupMessage.textContent = `\"${originalInput}\" no es una palabra válida`;
+    popupInput.style.display = "none";
+    modal.style.display = "block";
+    setTimeout(() => {
+      popupButton.focus();
+    }, 0);
+  }
 }
 
 hideHangman();
