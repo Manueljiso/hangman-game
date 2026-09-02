@@ -22,3 +22,15 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::851725368021:role/GitHubActions-Hangman-Deploy
           aws-region: us-east-1
+
+      - name: Upload files to S3
+        run: |
+          aws s3 sync . s3://hangman-game-manueljs \
+            --exclude ".git/*" \
+            --exclude ".github/*"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E1YKXSZ3J3S5UU \
+            --paths "/*"
