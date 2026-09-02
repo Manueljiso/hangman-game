@@ -155,6 +155,7 @@ function resetLayout() {
 async function loadWords() {
   const response = await fetch("words-es.json");
   words = await response.json();
+  console.log(words);
 }
 
 loadWords();
@@ -211,8 +212,10 @@ function multiPlayerMode() {
 
 function singlePlayerMode() {
   const randomIndex = Math.floor(Math.random() * words.length);
-
-  wordToGuess = normalizeWord(words[randomIndex]).toUpperCase();
+  
+  originalWord = words[randomIndex].toUpperCase();
+  
+  wordToGuess = normalizeWord(originalWord); 
 
   console.log(wordToGuess);
 
