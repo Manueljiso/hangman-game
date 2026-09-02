@@ -5,10 +5,20 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  test-workflow:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test workflow
-        run: echo "GitHub Actions is working"
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6.2.3
+        with:
+          role-to-assume: arn:aws:iam::851725368021:role/GitHubActions-Hangman-Deploy
+          aws-region: us-east-1
