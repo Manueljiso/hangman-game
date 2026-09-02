@@ -4,3 +4,11 @@ on:
   push:
     branches:
       - main
+
+jobs:
+  test-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test workflow
+        run: echo "GitHub Actions is working"
