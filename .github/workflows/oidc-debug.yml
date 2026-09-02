@@ -12,5 +12,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: OIDC Debugger
-        uses: github/actions-oidc-debugger@main
+      - name: Get OIDC token
+        env:
+          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ secrets.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}
+          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ secrets.ACTIONS_ID_TOKEN_REQUEST_URL }}
+        run: |
+          TOKEN_JSON=$(curl -s \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
+
+          ID_TOKEN=$(echo "$TOKEN_JSON" | jq -r .value)
+
+          echo "$ID_TOKEN" \
+            | awk -F. '{print $2}' \
+            | base64 -d 2>/dev/null \
+            | jq
